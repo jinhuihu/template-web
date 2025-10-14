@@ -1,0 +1,39 @@
+{
+  "name": "static-page-builder",
+  "version": "1.0.0",
+  "description": "静态页面打包渲染工具 - 从后端接口获取数据并渲染HTML模板",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "node src/index.js",
+    "dev": "node start-dev.js",
+    "dev:server": "node src/dev-server.js",
+    "dev:mock": "node mock-server.js",
+    "dev:watch": "node src/index.js --watch",
+    "clean": "rm -rf dist",
+    "start": "node mock-server.js",
+    "build:full": "./build.sh",
+    "kill-ports": "node scripts/kill-ports.js",
+    "dev:clean": "npm run kill-ports && npm run dev"
+  },
+  "keywords": [
+    "static-site",
+    "html-template",
+    "art-template",
+    "static-generator"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "chokidar": "^3.5.3",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "express": "^4.19.2",
+    "live-server": "^1.2.2",
+    "nodemon": "^3.1.10"
+  }
+}
