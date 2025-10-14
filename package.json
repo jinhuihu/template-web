@@ -4,7 +4,8 @@
   "description": "静态页面打包渲染工具 - 从后端接口获取数据并渲染HTML模板",
   "main": "src/index.js",
   "scripts": {
-    "build": "node src/index.js",
+    "build": "node src/production-builder.js",
+    "build:dev": "node src/index.js",
     "dev": "node start-dev.js",
     "dev:server": "node src/dev-server.js",
     "dev:mock": "node mock-server.js",
@@ -13,7 +14,7 @@
     "start": "node mock-server.js",
     "build:full": "./build.sh",
     "kill-ports": "node scripts/kill-ports.js",
-    "dev:clean": "npm run kill-ports && npm run dev"
+    "dev:clean": "pnpm run kill-ports && pnpm run dev"
   },
   "keywords": [
     "static-site",
@@ -33,7 +34,9 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "express": "^4.19.2",
+    "html-minifier-terser": "^7.2.0",
     "live-server": "^1.2.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "terser": "^5.44.0"
   }
 }
