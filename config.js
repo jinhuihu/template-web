@@ -57,6 +57,16 @@ module.exports = {
       name: 'image-test.html',
       output: 'image-test.html'
       // 图片本地化测试页面
+    },
+    {
+      name: '404.html',
+      output: '404.html'
+      // 404错误页面，不需要API数据
+    },
+    {
+      name: '500.html',
+      output: '500.html'
+      // 500错误页面，不需要API数据
     }
   ],
 

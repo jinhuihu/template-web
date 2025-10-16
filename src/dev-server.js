@@ -46,6 +46,10 @@ class DevServer {
       }
       next();
     });
+    
+    // JSON解析中间件
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
   }
 
   /**
@@ -146,78 +150,100 @@ class DevServer {
       }
     });
 
+    // 500错误处理 - 捕获所有未处理的错误
+    this.app.use((err, req, res, next) => {
+      console.error(chalk.red('❌ 服务器错误:'), err);
+      
+      const error500Path = path.resolve(config.paths.outputDir, '500.html');
+      
+      // 尝试使用构建好的500页面
+      if (fs.existsSync(error500Path)) {
+        res.status(500).sendFile(error500Path);
+      } else {
+        // 如果500.html不存在，返回简单的错误信息
+        res.status(500).send(`
+          <!DOCTYPE html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>500 - 服务器错误</title>
+              <style>
+                body {
+                  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 100vh;
+                  margin: 0;
+                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                  color: white;
+                  text-align: center;
+                  padding: 2rem;
+                }
+                h1 { font-size: 6rem; margin: 0; }
+                h2 { font-size: 2rem; margin: 1rem 0; }
+                a { color: white; text-decoration: underline; }
+              </style>
+            </head>
+            <body>
+              <div>
+                <h1>500</h1>
+                <h2>服务器内部错误</h2>
+                <p>错误信息: ${err.message || '未知错误'}</p>
+                <p><a href="/">返回首页</a></p>
+              </div>
+            </body>
+          </html>
+        `);
+      }
+    });
+    
     // 404处理 - 对于不存在的文件返回404页面
     this.app.use((req, res) => {
-      res.status(404).send(`
-        <!DOCTYPE html>
-        <html lang="zh-CN">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>404 - 页面未找到</title>
-            <style>
-              body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                margin: 0;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-              }
-              .container {
-                text-align: center;
-                padding: 2rem;
-              }
-              h1 {
-                font-size: 6rem;
-                margin: 0;
-                font-weight: 700;
-              }
-              h2 {
-                font-size: 2rem;
-                margin: 1rem 0;
-                font-weight: 400;
-              }
-              p {
-                font-size: 1.1rem;
-                margin: 2rem 0;
-                opacity: 0.9;
-              }
-              a {
-                color: white;
-                text-decoration: none;
-                padding: 0.8rem 2rem;
-                border: 2px solid white;
-                border-radius: 50px;
-                display: inline-block;
-                transition: all 0.3s;
-              }
-              a:hover {
-                background: white;
-                color: #667eea;
-              }
-              .path {
-                background: rgba(255,255,255,0.2);
-                padding: 0.5rem 1rem;
-                border-radius: 5px;
-                margin: 1rem 0;
-                font-family: 'Courier New', monospace;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>404</h1>
-              <h2>页面未找到</h2>
-              <div class="path">请求路径: ${req.url}</div>
-              <p>您访问的页面不存在，请检查URL是否正确。</p>
-              <a href="/">返回首页</a>
-            </div>
-          </body>
-        </html>
-      `);
+      const error404Path = path.resolve(config.paths.outputDir, '404.html');
+      
+      // 尝试使用构建好的404页面
+      if (fs.existsSync(error404Path)) {
+        res.status(404).sendFile(error404Path);
+      } else {
+        // 如果404.html不存在，返回简单的错误信息
+        res.status(404).send(`
+          <!DOCTYPE html>
+          <html lang="zh-CN">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>404 - 页面未找到</title>
+              <style>
+                body {
+                  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 100vh;
+                  margin: 0;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white;
+                  text-align: center;
+                  padding: 2rem;
+                }
+                h1 { font-size: 6rem; margin: 0; }
+                h2 { font-size: 2rem; margin: 1rem 0; }
+                a { color: white; text-decoration: underline; }
+              </style>
+            </head>
+            <body>
+              <div>
+                <h1>404</h1>
+                <h2>页面未找到</h2>
+                <p>请求路径: ${req.url}</p>
+                <p><a href="/">返回首页</a></p>
+              </div>
+            </body>
+          </html>
+        `);
+      }
     });
   }
 
