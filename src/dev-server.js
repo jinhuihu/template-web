@@ -35,9 +35,15 @@ class DevServer {
     // 静态文件服务
     this.app.use(express.static(config.paths.outputDir));
     
-    // 日志中间件
+    // 日志中间件（过滤掉hot-reload相关请求，避免刷屏）
     this.app.use((req, res, next) => {
-      console.log(chalk.cyan(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url}`));
+      // 只记录重要的请求，忽略热更新相关的请求
+      if (!req.url.includes('/hot-reload') && 
+          !req.url.includes('.css') && 
+          !req.url.includes('.js') &&
+          !req.url.includes('.html')) {
+        console.log(chalk.cyan(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url}`));
+      }
       next();
     });
   }
@@ -115,14 +121,23 @@ class DevServer {
         if (index > -1) {
           this.clients.splice(index, 1);
         }
-        console.log(chalk.gray(`🔌 客户端已断开 (${this.clients.length} 个连接)`));
+        // 静默处理断开连接，不打印日志避免刷屏
+        // console.log(chalk.gray(`🔌 客户端已断开 (${this.clients.length} 个连接)`));
       });
 
-      console.log(chalk.cyan(`🔌 客户端已连接 (${this.clients.length} 个连接)`));
+      // 静默处理连接，只在首次连接时打印
+      if (this.clients.length === 1) {
+        console.log(chalk.cyan(`🔌 热更新客户端已连接`));
+      }
     });
 
-    // 重新构建端点
+    // 重新构建端点（仅用于手动触发）
     this.app.post('/rebuild', async (req, res) => {
+      if (this.isBuilding) {
+        res.status(429).json({ success: false, message: '构建正在进行中' });
+        return;
+      }
+      
       try {
         await this.rebuild();
         res.json({ success: true, message: '重新构建完成' });
@@ -153,7 +168,7 @@ class DevServer {
   /**
    * 重新构建项目
    */
-  async rebuild() {
+  async rebuild(isInitialBuild = false) {
     if (this.isBuilding) {
       console.log(chalk.yellow('⚠️  构建正在进行中，跳过此次请求'));
       return;
@@ -163,8 +178,16 @@ class DevServer {
     console.log(chalk.blue('🔄 开始重新构建...'));
 
     try {
-      // 清理并创建输出目录
-      await fs.emptyDir(config.paths.outputDir);
+      // 只在初始构建时清空目录，热更新时不清空
+      if (isInitialBuild) {
+        await fs.emptyDir(config.paths.outputDir);
+      } else {
+        // 热更新时清除 art-template 缓存，确保读取最新内容
+        const template = require('art-template');
+        if (template.defaults.caches) {
+          template.defaults.caches = {};
+        }
+      }
       
       // 构建所有页面
       const results = await buildPages(config);
@@ -204,7 +227,7 @@ class DevServer {
     try {
       // 初始构建
       console.log(chalk.blue.bold('\n🚀 启动开发服务器...\n'));
-      await this.rebuild();
+      await this.rebuild(true); // 标记为初始构建
 
       // 启动HTTP服务器
       this.server = this.app.listen(this.port, () => {
@@ -232,8 +255,25 @@ class DevServer {
 
       // 设置文件监听
       console.log(chalk.yellow('👀 开始监听文件变化...\n'));
-      this.watcher = watchFiles(config, async () => {
+      
+      let isRebuilding = false; // 添加重建标志
+      
+      const handleFileChange = async () => {
+        // 如果正在重建，直接返回
+        if (isRebuilding) {
+          console.log(chalk.yellow('⚠️  重建正在进行中，忽略此次文件变化'));
+          return;
+        }
+        
         console.log(chalk.blue('📝 检测到文件变化，开始重新构建...'));
+        isRebuilding = true;
+        
+        // 构建期间暂停监听
+        if (this.watcher && this.watcher.close) {
+          this.watcher.close();
+          this.watcher = null;
+          console.log(chalk.gray('[Dev] 暂停文件监听'));
+        }
         
         // 通知客户端开始构建
         this.broadcastSSE({ type: 'build-start' });
@@ -244,15 +284,26 @@ class DevServer {
           
           // 通知客户端构建完成并刷新页面
           this.broadcastSSE({ type: 'build-complete' });
+          
+          // 延迟刷新，确保监听器已经暂停且不会被浏览器请求触发
           setTimeout(() => {
             this.broadcastSSE({ type: 'reload' });
-          }, 100); // 稍微延迟确保文件写入完成
+          }, 500); // 增加延迟到500ms
           
         } catch (error) {
           console.error(chalk.red('❌ 热更新失败:'), error.message);
           this.broadcastSSE({ type: 'build-error', error: error.message });
+        } finally {
+          // 构建完成后，延迟重启监听
+          setTimeout(() => {
+            console.log(chalk.gray('[Dev] 重启文件监听'));
+            this.watcher = watchFiles(config, handleFileChange);
+            isRebuilding = false; // 重置重建标志
+          }, 5000); // 延迟5秒确保所有文件操作完成且系统稳定
         }
-      });
+      };
+      
+      this.watcher = watchFiles(config, handleFileChange);
 
       // 优雅退出处理
       this.setupGracefulShutdown();

@@ -1,0 +1,44 @@
+<style>
+  /* Header 组件专属样式 */
+  header {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  header h1 {
+    animation: fadeInDown 0.8s ease-out;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<header>
+  <h1>22{{title || '欢迎使用静态页面生成器'}}</h1>
+  {{if subtitle}}
+  <p class="subtitle">{{subtitle}}</p>
+  {{/if}}
+</header>
+
+<script>
+  // Header 组件专属脚本
+  (function() {
+    'use strict';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const header = document.querySelector('header');
+      if (header) {
+        console.log('Header component initialized');
+      }
+    });
+  })();
+</script>
+

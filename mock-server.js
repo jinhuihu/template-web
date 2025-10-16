@@ -197,7 +197,9 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
 
-  console.log(`[${new Date().toLocaleString()}] ${req.method} ${pathname}`);
+  // 静默API日志，避免在开发模式下刷屏
+  // 如需查看API调用，取消下一行的注释
+  // console.log(`[${new Date().toLocaleString()}] ${req.method} ${pathname}`);
 
   // 查找对应的mock数据
   if (mockData[pathname]) {

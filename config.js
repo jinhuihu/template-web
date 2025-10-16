@@ -47,6 +47,16 @@ module.exports = {
           products: data.products || []
         };
       }
+    },
+    {
+      name: 'mobile-demo.html',
+      output: 'mobile-demo.html'
+      // 演示页面不需要API数据
+    },
+    {
+      name: 'image-test.html',
+      output: 'image-test.html'
+      // 图片本地化测试页面
     }
   ],
 

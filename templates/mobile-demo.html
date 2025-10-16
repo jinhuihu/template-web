@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>移动端适配演示页面</title>
+  
+  <!-- 移动端适配 - 必须最先加载 -->
+  <script src="assets/js/flexible.js"></script>
+  
+  <!-- 移动端适配样式 -->
+  <link rel="stylesheet" href="assets/css/mobile-adapter.css">
+  
+  <style>
+    /* ========== 演示页面样式 ========== */
+    
+    body {
+      background: #f5f5f5;
+      padding-bottom: 1rem;
+    }
+    
+    /* 页面标题 */
+    .page-title {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.6rem 0.3rem;
+      text-align: center;
+    }
+    
+    .page-title h1 {
+      font-size: 20px;
+      margin-bottom: 0.1rem;
+    }
+    
+    .page-title p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    
+    /* 说明卡片 */
+    .info-card {
+      margin: 0.3rem;
+      padding: 0.3rem;
+      background: white;
+      border-radius: 0.16rem;
+      box-shadow: 0 0.02rem 0.08rem rgba(0, 0, 0, 0.08);
+    }
+    
+    .info-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 0.2rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .info-item {
+      display: flex;
+      padding: 0.16rem 0;
+      font-size: 14px;
+    }
+    
+    .info-label {
+      width: 2rem;
+      color: #999;
+    }
+    
+    .info-value {
+      flex: 1;
+      color: #333;
+      font-weight: 500;
+    }
+    
+    /* 尺寸演示 */
+    .size-demo {
+      margin: 0.3rem;
+      padding: 0.3rem;
+      background: white;
+      border-radius: 0.16rem;
+    }
+    
+    .size-demo-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+    
+    .size-box {
+      margin-bottom: 0.2rem;
+      padding: 0.2rem;
+      background: #f0f8ff;
+      border-left: 0.04rem solid #667eea;
+      font-size: 13px;
+    }
+    
+    .size-box-label {
+      color: #666;
+      margin-bottom: 0.08rem;
+    }
+    
+    .size-box-demo {
+      background: #667eea;
+      border-radius: 0.08rem;
+    }
+    
+    /* 按钮演示 */
+    .button-demo {
+      margin: 0.3rem;
+      padding: 0.3rem;
+      background: white;
+      border-radius: 0.16rem;
+    }
+    
+    .demo-section {
+      margin-bottom: 0.3rem;
+    }
+    
+    .demo-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .demo-label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 0.16rem;
+    }
+    
+    .btn {
+      width: 100%;
+      height: 0.88rem;
+      border: none;
+      border-radius: 0.08rem;
+      font-size: 15px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    
+    .btn:active {
+      opacity: 0.8;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 1px solid #667eea;
+    }
+    
+    /* 网格演示 */
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.2rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .grid-item {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 0.12rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+    }
+    
+    /* 底部信息 */
+    .footer-info {
+      margin: 0.3rem;
+      padding: 0.4rem;
+      background: #fff3cd;
+      border-radius: 0.12rem;
+      border-left: 0.04rem solid #ffc107;
+    }
+    
+    .footer-info-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #856404;
+      margin-bottom: 0.16rem;
+    }
+    
+    .footer-info-text {
+      font-size: 13px;
+      color: #856404;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <!-- 页面标题 -->
+  <div class="page-title safe-area-top">
+    <h1>📱 移动端适配演示</h1>
+    <p>基于750px设计稿 | rem自适应方案</p>
+  </div>
+  
+  <!-- 设备信息 -->
+  <div class="info-card">
+    <h3 class="info-title">当前设备信息</h3>
+    <div class="info-item">
+      <span class="info-label">屏幕宽度:</span>
+      <span class="info-value" id="screenWidth">-</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">设备类型:</span>
+      <span class="info-value" id="deviceType">-</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">rem基准:</span>
+      <span class="info-value" id="fontSize">-</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">设计稿:</span>
+      <span class="info-value">750px</span>
+    </div>
+  </div>
+  
+  <!-- 尺寸演示 -->
+  <div class="size-demo">
+    <h3 class="size-demo-title">尺寸演示（设计稿 → 代码）</h3>
+    
+    <div class="size-box">
+      <div class="size-box-label">100px → 1rem</div>
+      <div class="size-box-demo" style="width: 1rem; height: 1rem;"></div>
+    </div>
+    
+    <div class="size-box">
+      <div class="size-box-label">200px → 2rem</div>
+      <div class="size-box-demo" style="width: 2rem; height: 0.5rem;"></div>
+    </div>
+    
+    <div class="size-box">
+      <div class="size-box-label">300px → 3rem</div>
+      <div class="size-box-demo" style="width: 3rem; height: 0.5rem;"></div>
+    </div>
+    
+    <div class="size-box">
+      <div class="size-box-label">690px → 6.9rem（内容宽度）</div>
+      <div class="size-box-demo" style="width: 6.9rem; height: 0.5rem;"></div>
+    </div>
+  </div>
+  
+  <!-- 按钮演示 -->
+  <div class="button-demo">
+    <h3 class="size-demo-title" style="margin-bottom: 0.3rem;">按钮演示</h3>
+    
+    <div class="demo-section">
+      <div class="demo-label">主按钮（高度88px = 0.88rem）</div>
+      <button class="btn btn-primary">确认按钮</button>
+    </div>
+    
+    <div class="demo-section">
+      <div class="demo-label">次要按钮</div>
+      <button class="btn btn-secondary">取消按钮</button>
+    </div>
+  </div>
+  
+  <!-- 网格演示 -->
+  <div class="info-card">
+    <h3 class="info-title">网格布局演示</h3>
+    <div class="grid-demo">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+    </div>
+  </div>
+  
+  <!-- 工具类演示 -->
+  <div class="info-card">
+    <h3 class="info-title">工具类演示</h3>
+    
+    <div style="margin-bottom: 0.3rem;">
+      <div class="demo-label">Flex居中布局</div>
+      <div class="flex-center" style="height: 1rem; background: #f5f5f5; border-radius: 0.08rem;">
+        <span style="font-size: 14px;">我在容器中央</span>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 0.3rem;">
+      <div class="demo-label">Flex两端对齐</div>
+      <div class="flex-between" style="padding: 0.2rem; background: #f5f5f5; border-radius: 0.08rem;">
+        <span style="font-size: 14px;">左边</span>
+        <span style="font-size: 14px;">右边</span>
+      </div>
+    </div>
+    
+    <div>
+      <div class="demo-label">文本省略（ellipsis）</div>
+      <p class="ellipsis" style="font-size: 14px; color: #666;">这是一段很长很长很长很长很长很长很长很长的文本内容</p>
+    </div>
+  </div>
+  
+  <!-- 使用说明 -->
+  <div class="footer-info safe-area-bottom">
+    <div class="footer-info-title">💡 使用说明</div>
+    <div class="footer-info-text">
+      • PC端：显示750px居中模拟器<br>
+      • 移动端：全屏自适应显示<br>
+      • 设计稿标注转代码：px ÷ 100 = rem<br>
+      • 字体和边框使用px，其他用rem
+    </div>
+  </div>
+  
+  <script>
+    // 显示设备信息
+    function updateDeviceInfo() {
+      const html = document.documentElement;
+      const device = html.getAttribute('data-device') || 'unknown';
+      const fontSize = html.style.fontSize || 'auto';
+      const width = window.innerWidth;
+      
+      document.getElementById('screenWidth').textContent = width + 'px';
+      document.getElementById('deviceType').textContent = device === 'mobile' ? '移动端' : 'PC端（模拟器）';
+      document.getElementById('fontSize').textContent = fontSize;
+    }
+    
+    // 初始化
+    updateDeviceInfo();
+    
+    // 监听窗口变化
+    window.addEventListener('resize', updateDeviceInfo);
+    window.addEventListener('remUnitChange', updateDeviceInfo);
+  </script>
+</body>
+</html>
+

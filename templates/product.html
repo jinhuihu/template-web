@@ -2,8 +2,15 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>{{title || '产品展示'}}</title>
+  
+  <!-- 移动端适配 - 必须最先加载 -->
+  <script src="assets/js/flexible.js"></script>
+  
+  <!-- 移动端适配样式 -->
+  <link rel="stylesheet" href="assets/css/mobile-adapter.css">
+  
   <style>
     * {
       margin: 0;
@@ -142,10 +149,7 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>{{title || '产品展示'}}</h1>
-      <p class="subtitle">{{subtitle || '发现我们的精选产品'}}</p>
-    </header>
+    {{include 'header'}}
 
     {{if categories && categories.length > 0}}
     <div class="filter-bar">

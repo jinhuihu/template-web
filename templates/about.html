@@ -2,8 +2,15 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title || '关于我们'}}11</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>{{title || '关于我们'}}</title>
+  
+  <!-- 移动端适配 - 必须最先加载 -->
+  <script src="assets/js/flexible.js"></script>
+  
+  <!-- 移动端适配样式 -->
+  <link rel="stylesheet" href="assets/css/mobile-adapter.css">
+  
   <style>
     * {
       margin: 0;
@@ -109,9 +116,7 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>{{title || '关于我们'}}</h1>
-    </header>
+    {{include 'header'}}
 
     <section class="intro">
       <p>{{introduction || '这是一个关于我们的介绍...'}}</p>

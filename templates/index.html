@@ -2,8 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>{{title || '首页 - 热更新测试'}}</title>
+  
+  <!-- 移动端适配 - 必须最先加载 -->
+  <script src="assets/js/flexible.js"></script>
+  
+  <!-- 移动端适配样式 -->
+  <link rel="stylesheet" href="assets/css/mobile-adapter.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     * {
@@ -100,10 +106,7 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>1122{{title || '欢迎使用静态页面生成器'}}</h1>
-      <p class="subtitle">{{description || '高效、简单、强大的静态网站构建工具'}}</p>
-    </header>
+    {{include 'header'}}
 
     <section class="features">
       {{each features}}

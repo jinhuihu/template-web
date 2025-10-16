@@ -1,0 +1,204 @@
+/**
+ * 移动端适配样式
+ * 
+ * 设计稿基准: 750px
+ * rem基准: 100px (1rem = 100px)
+ * 
+ * 使用规则:
+ * - 设计稿标注多少px，代码就写 (px / 100)rem
+ * - 例如: 设计稿 300px → 代码 3rem
+ * - 例如: 设计稿 40px → 代码 0.4rem
+ * - 例如: 设计稿 1px → 代码 0.01rem
+ */
+
+/* ========== 全局重置 ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  /* fontSize 由 flexible.js 动态设置 */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'PingFang SC', 
+               'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  font-size: 0.14rem; /* 14px */
+  line-height: 1.5;
+  color: #333;
+  background-color: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== PC端模拟器样式 ========== */
+html.pc-simulator {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+html.pc-simulator body {
+  width: 620px; /* 容器宽度620px */
+  height: 100vh; /* 容器高度等于页面高度 */
+  max-width: 100%;
+  margin: 0;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  overflow-y: auto; /* 允许滚动查看完整内容 */
+  overflow-x: hidden;
+  position: relative;
+  background: #fff;
+}
+
+/* ========== 移动端优化 ========== */
+
+/* 移动端滚动优化 */
+html[data-device="mobile"] {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* 移动端字体优化 */
+html[data-device="mobile"] body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== 常用工具类 ========== */
+
+/* 1px 边框解决方案 */
+.hairline,
+.border-1px {
+  position: relative;
+}
+
+.hairline::after,
+.border-1px::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: 1px solid #e5e5e5;
+  transform-origin: 0 0;
+  transform: scale(0.5);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* 清除浮动 */
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* 文本溢出省略 */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Flex布局 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 安全区域适配（刘海屏、底部横条） */
+.safe-area-top {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: constant(safe-area-inset-left);
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: constant(safe-area-inset-right);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ========== 响应式断点 ========== */
+
+/* 仅移动端显示 */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* 仅PC端显示 */
+@media (max-width: 767px) {
+  .pc-only {
+    display: none !important;
+  }
+}
+
+/* ========== 调试辅助 ========== */
+
+/* 开发环境显示设备信息 */
+html[data-debug="true"]::after {
+  content: attr(data-device) ' - fontSize: ' attr(data-font-size);
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #0f0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+  z-index: 99999;
+}
+

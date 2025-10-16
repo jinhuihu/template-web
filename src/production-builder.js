@@ -12,6 +12,7 @@ const fs = require('fs-extra');
 const { minify: minifyJS } = require('terser');
 const { minify: minifyHTML } = require('html-minifier-terser');
 const { buildPages, copyAssets } = require('./builder');
+const { processImages } = require('./image-downloader');
 const config = require('../config');
 
 /**
@@ -117,10 +118,15 @@ async function processHTMLFile(filePath) {
     // 读取文件内容
     let content = await fs.readFile(filePath, 'utf-8');
     
-    // 移除热更新脚本
+    // 1. 下载图片并替换URL（生产环境）
+    const fileName = path.basename(filePath, '.html');
+    console.log(`  检查图片URL...`);
+    content = await processImages(content, fileName, config.paths.outputDir);
+    
+    // 2. 移除热更新脚本
     content = removeHotReloadScript(content);
     
-    // 压缩HTML
+    // 3. 压缩HTML
     content = await compressHTML(content);
     
     // 写回文件
