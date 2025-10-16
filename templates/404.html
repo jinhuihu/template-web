@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>404 - Page Not Found</title>
   
   <style>
@@ -19,25 +19,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: white;
       padding: 20px;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     
-    /* 背景装饰 */
-    .bg-decoration {
+    /* 背景动画 */
+    .bg-animation {
       position: absolute;
       width: 100%;
       height: 100%;
       overflow: hidden;
       z-index: 0;
+      opacity: 0.5;
     }
     
     .circle {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.15);
       animation: float 20s infinite ease-in-out;
     }
     
@@ -65,6 +66,14 @@
       animation-delay: 4s;
     }
     
+    .circle:nth-child(4) {
+      width: 50px;
+      height: 50px;
+      right: 25%;
+      bottom: 30%;
+      animation-delay: 6s;
+    }
+    
     @keyframes float {
       0%, 100% {
         transform: translateY(0) rotate(0deg);
@@ -87,12 +96,12 @@
     
     /* 404数字 */
     .error-code {
-      font-size: 120px;
+      font-size: 20vw;
       font-weight: 900;
       line-height: 1;
       margin-bottom: 20px;
-      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      animation: pulse 2s infinite ease-in-out;
+      text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      animation: pulse 2s infinite;
     }
     
     @keyframes pulse {
@@ -106,7 +115,7 @@
     
     /* 标题 */
     .error-title {
-      font-size: 32px;
+      font-size: 6vw;
       font-weight: 600;
       margin-bottom: 15px;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -114,88 +123,93 @@
     
     /* 描述 */
     .error-description {
-      font-size: 16px;
+      font-size: 4vw;
+      margin-bottom: 25px;
+      opacity: 0.9;
       line-height: 1.6;
-      margin-bottom: 30px;
-      opacity: 0.95;
     }
     
     /* 路径显示 */
     .error-path {
       background: rgba(255, 255, 255, 0.2);
-      padding: 12px 16px;
+      padding: 12px 15px;
       border-radius: 8px;
       margin: 20px 0;
       font-family: 'Courier New', monospace;
-      font-size: 14px;
+      font-size: 3.5vw;
       word-break: break-all;
       backdrop-filter: blur(10px);
     }
     
-    /* 按钮 */
-    .btn-group {
+    /* 按钮组 */
+    .button-group {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 30px;
+      margin: 25px 0;
     }
     
     .btn {
-      padding: 14px 32px;
-      border: 2px solid #fff;
-      border-radius: 50px;
-      color: #fff;
+      display: inline-block;
+      padding: 12px 25px;
+      border: 2px solid white;
+      border-radius: 25px;
+      color: white;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 4vw;
       font-weight: 600;
       transition: all 0.3s;
-      display: inline-block;
-      background: transparent;
       cursor: pointer;
+      background: transparent;
     }
     
-    .btn:hover {
-      background: #fff;
+    .btn:hover,
+    .btn:active {
+      background: white;
       color: #667eea;
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
     
     .btn-primary {
-      background: #fff;
+      background: white;
       color: #667eea;
     }
     
-    .btn-primary:hover {
+    .btn-primary:hover,
+    .btn-primary:active {
       background: transparent;
-      color: #fff;
+      color: white;
     }
     
     /* 建议列表 */
     .suggestions {
-      margin-top: 40px;
+      margin-top: 30px;
+      text-align: left;
       background: rgba(255, 255, 255, 0.15);
-      padding: 24px;
+      padding: 20px;
       border-radius: 12px;
       backdrop-filter: blur(10px);
     }
     
     .suggestions h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
+      font-size: 5vw;
+      margin-bottom: 12px;
+      text-align: center;
     }
     
     .suggestions ul {
       list-style: none;
-      text-align: left;
-      font-size: 14px;
-      line-height: 2;
+      padding: 0;
+      font-size: 3.8vw;
     }
     
     .suggestions li {
+      padding: 8px 0;
       padding-left: 20px;
       position: relative;
+      line-height: 1.5;
     }
     
     .suggestions li:before {
@@ -205,74 +219,86 @@
       font-weight: bold;
     }
     
-    /* 移动端优化 */
-    @media (max-width: 768px) {
+    /* PC端适配 */
+    @media (min-width: 768px) {
       .error-code {
-        font-size: 80px;
+        font-size: 120px;
       }
       
       .error-title {
-        font-size: 24px;
+        font-size: 36px;
       }
       
       .error-description {
-        font-size: 14px;
+        font-size: 18px;
       }
       
       .error-path {
-        font-size: 12px;
-        padding: 10px 12px;
+        font-size: 14px;
+        padding: 15px 20px;
       }
       
       .btn {
-        padding: 12px 24px;
-        font-size: 14px;
-      }
-      
-      .suggestions {
-        padding: 20px;
+        font-size: 16px;
+        padding: 14px 30px;
       }
       
       .suggestions h3 {
-        font-size: 16px;
+        font-size: 20px;
       }
       
       .suggestions ul {
-        font-size: 13px;
+        font-size: 16px;
       }
     }
     
-    @media (max-width: 480px) {
+    /* 小屏幕优化 */
+    @media (max-width: 375px) {
       body {
         padding: 15px;
       }
       
       .error-code {
-        font-size: 60px;
+        font-size: 18vw;
+        margin-bottom: 15px;
       }
       
       .error-title {
-        font-size: 20px;
+        font-size: 5.5vw;
       }
       
       .error-description {
-        font-size: 13px;
+        font-size: 3.8vw;
       }
       
-      .btn-group {
-        flex-direction: column;
-        gap: 10px;
+      .error-path {
+        font-size: 3.2vw;
+        padding: 10px 12px;
       }
       
       .btn {
-        width: 100%;
+        font-size: 3.8vw;
+        padding: 10px 20px;
+      }
+      
+      .suggestions {
+        padding: 15px;
+      }
+      
+      .suggestions h3 {
+        font-size: 4.5vw;
+      }
+      
+      .suggestions ul {
+        font-size: 3.5vw;
       }
     }
   </style>
 </head>
 <body>
-  <!-- 背景装饰 -->
-  <div class="bg-decoration">
+  <!-- 背景动画 -->
+  <div class="bg-animation">
+    <div class="circle"></div>
     <div class="circle"></div>
     <div class="circle"></div>
     <div class="circle"></div>
@@ -286,9 +312,11 @@
       Sorry, the page you are looking for does not exist or has been removed.
     </p>
     
-    <div class="error-path" id="errorPath"></div>
+    <div class="error-path" id="errorPath">
+      <!-- JavaScript will insert path here -->
+    </div>
     
-    <div class="btn-group">
+    <div class="button-group">
       <a href="/" class="btn btn-primary">Back to Home</a>
       <a href="javascript:history.back()" class="btn">Go Back</a>
     </div>
@@ -296,19 +324,20 @@
     <div class="suggestions">
       <h3>💡 What You Can Try</h3>
       <ul>
-        <li>Check if the URL is correct</li>
-        <li>Return to homepage</li>
+        <li>Check if the URL spelling is correct</li>
+        <li>Return to homepage and navigate again</li>
         <li>Use browser's back button</li>
-        <li>Contact support if needed</li>
+        <li>Contact website administrator for help</li>
       </ul>
     </div>
   </div>
   
   <script>
+    // Display current path
     (function() {
       const pathEl = document.getElementById('errorPath');
       const currentPath = window.location.pathname + window.location.search;
-      pathEl.textContent = 'Path: ' + currentPath;
+      pathEl.textContent = 'Requested Path: ' + currentPath;
     })();
   </script>
 </body>

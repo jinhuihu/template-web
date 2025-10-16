@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>500 - Server Error</title>
   
   <style>
@@ -19,19 +19,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: white;
       padding: 20px;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     
-    /* 背景装饰 */
-    .bg-decoration {
+    /* 背景动画 */
+    .bg-animation {
       position: absolute;
       width: 100%;
       height: 100%;
       overflow: hidden;
       z-index: 0;
+      opacity: 0.3;
     }
     
     .wave {
@@ -76,8 +77,8 @@
     
     /* 错误图标 */
     .error-icon {
-      font-size: 80px;
-      margin-bottom: 20px;
+      font-size: 15vw;
+      margin-bottom: 15px;
       animation: shake 2s infinite;
     }
     
@@ -95,16 +96,16 @@
     
     /* 500数字 */
     .error-code {
-      font-size: 80px;
+      font-size: 16vw;
       font-weight: 900;
       line-height: 1;
       margin-bottom: 20px;
-      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     }
     
     /* 标题 */
     .error-title {
-      font-size: 32px;
+      font-size: 6vw;
       font-weight: 600;
       margin-bottom: 15px;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -112,99 +113,105 @@
     
     /* 描述 */
     .error-description {
-      font-size: 16px;
+      font-size: 4vw;
+      margin-bottom: 25px;
+      opacity: 0.9;
       line-height: 1.6;
-      margin-bottom: 30px;
-      opacity: 0.95;
     }
     
     /* 错误详情 */
     .error-details {
       background: rgba(255, 255, 255, 0.2);
-      padding: 16px;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 10px;
       margin: 20px 0;
-      backdrop-filter: blur(10px);
       text-align: left;
+      backdrop-filter: blur(10px);
     }
     
     .error-details h4 {
       margin-bottom: 8px;
-      font-size: 14px;
+      font-size: 4.2vw;
       font-weight: 600;
     }
     
     .error-details p {
       font-family: 'Courier New', monospace;
-      font-size: 13px;
-      opacity: 0.9;
-      word-break: break-word;
+      font-size: 3.5vw;
+      opacity: 0.85;
+      word-break: break-all;
+      line-height: 1.4;
     }
     
-    /* 按钮 */
-    .btn-group {
+    /* 按钮组 */
+    .button-group {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 30px;
+      margin: 25px 0;
     }
     
     .btn {
-      padding: 14px 32px;
-      border: 2px solid #fff;
-      border-radius: 50px;
-      color: #fff;
+      display: inline-block;
+      padding: 12px 25px;
+      border: 2px solid white;
+      border-radius: 25px;
+      color: white;
       text-decoration: none;
-      font-size: 16px;
+      font-size: 4vw;
       font-weight: 600;
       transition: all 0.3s;
-      display: inline-block;
-      background: transparent;
       cursor: pointer;
+      background: transparent;
     }
     
-    .btn:hover {
-      background: #fff;
+    .btn:hover,
+    .btn:active {
+      background: white;
       color: #f5576c;
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
     
     .btn-primary {
-      background: #fff;
+      background: white;
       color: #f5576c;
     }
     
-    .btn-primary:hover {
+    .btn-primary:hover,
+    .btn-primary:active {
       background: transparent;
-      color: #fff;
+      color: white;
     }
     
     /* 帮助信息 */
     .help-info {
-      margin-top: 40px;
+      margin-top: 30px;
       background: rgba(255, 255, 255, 0.15);
-      padding: 24px;
+      padding: 20px;
       border-radius: 12px;
       backdrop-filter: blur(10px);
     }
     
     .help-info h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
+      font-size: 5vw;
+      margin-bottom: 12px;
+      text-align: center;
     }
     
     .help-info ul {
       list-style: none;
+      padding: 0;
       text-align: left;
-      font-size: 14px;
-      line-height: 2;
+      font-size: 3.8vw;
     }
     
     .help-info li {
+      padding: 8px 0;
       padding-left: 20px;
       position: relative;
+      line-height: 1.5;
     }
     
     .help-info li:before {
@@ -214,22 +221,71 @@
       font-weight: bold;
     }
     
-    /* 移动端优化 */
-    @media (max-width: 768px) {
+    /* PC端适配 */
+    @media (min-width: 768px) {
       .error-icon {
-        font-size: 60px;
+        font-size: 100px;
       }
       
       .error-code {
-        font-size: 60px;
+        font-size: 100px;
       }
       
       .error-title {
-        font-size: 24px;
+        font-size: 36px;
       }
       
       .error-description {
+        font-size: 18px;
+      }
+      
+      .error-details {
+        padding: 20px;
+      }
+      
+      .error-details h4 {
+        font-size: 18px;
+      }
+      
+      .error-details p {
         font-size: 14px;
+      }
+      
+      .btn {
+        font-size: 16px;
+        padding: 14px 30px;
+      }
+      
+      .help-info h3 {
+        font-size: 20px;
+      }
+      
+      .help-info ul {
+        font-size: 16px;
+      }
+    }
+    
+    /* 小屏幕优化 */
+    @media (max-width: 375px) {
+      body {
+        padding: 15px;
+      }
+      
+      .error-icon {
+        font-size: 14vw;
+      }
+      
+      .error-code {
+        font-size: 14vw;
+        margin-bottom: 15px;
+      }
+      
+      .error-title {
+        font-size: 5.5vw;
+      }
+      
+      .error-description {
+        font-size: 3.8vw;
       }
       
       .error-details {
@@ -237,66 +293,35 @@
       }
       
       .error-details h4 {
-        font-size: 13px;
+        font-size: 4vw;
       }
       
       .error-details p {
-        font-size: 12px;
+        font-size: 3.2vw;
       }
       
       .btn {
-        padding: 12px 24px;
-        font-size: 14px;
+        font-size: 3.8vw;
+        padding: 10px 20px;
       }
       
       .help-info {
-        padding: 20px;
-      }
-      
-      .help-info h3 {
-        font-size: 16px;
-      }
-      
-      .help-info ul {
-        font-size: 13px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      body {
         padding: 15px;
       }
       
-      .error-icon {
-        font-size: 50px;
+      .help-info h3 {
+        font-size: 4.5vw;
       }
       
-      .error-code {
-        font-size: 50px;
-      }
-      
-      .error-title {
-        font-size: 20px;
-      }
-      
-      .error-description {
-        font-size: 13px;
-      }
-      
-      .btn-group {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .btn {
-        width: 100%;
+      .help-info ul {
+        font-size: 3.5vw;
       }
     }
   </style>
 </head>
 <body>
-  <!-- 背景装饰 -->
-  <div class="bg-decoration">
+  <!-- 背景动画 -->
+  <div class="bg-animation">
     <div class="wave"></div>
     <div class="wave"></div>
   </div>
@@ -308,17 +333,17 @@
     <h1 class="error-title">Internal Server Error</h1>
     <p class="error-description">
       Sorry, the server encountered an error and could not complete your request.<br>
-      Our team has been notified and is working on it.
+      Our technical team has been notified and is working on it.
     </p>
     
     <div class="error-details">
       <h4>Error Message</h4>
-      <p id="errorMessage">Internal error occurred</p>
-      <h4 style="margin-top: 12px;">Time</h4>
+      <p id="errorMessage">An internal error occurred while processing the request</p>
+      <h4 style="margin-top: 12px;">Occurred At</h4>
       <p id="errorTime"></p>
     </div>
     
-    <div class="btn-group">
+    <div class="button-group">
       <a href="/" class="btn btn-primary">Back to Home</a>
       <a href="javascript:location.reload()" class="btn">Reload Page</a>
     </div>
@@ -326,15 +351,16 @@
     <div class="help-info">
       <h3>🔧 What You Can Do</h3>
       <ul>
-        <li>Refresh and try again later</li>
-        <li>Clear browser cache</li>
-        <li>Return to homepage</li>
-        <li>Contact support if needed</li>
+        <li>Refresh the page and try again later</li>
+        <li>Clear browser cache and retry</li>
+        <li>Return to homepage and start over</li>
+        <li>Contact technical support if the problem persists</li>
       </ul>
     </div>
   </div>
   
   <script>
+    // Display error time
     (function() {
       const timeEl = document.getElementById('errorTime');
       const now = new Date();
@@ -349,6 +375,7 @@
       });
       timeEl.textContent = timeStr;
       
+      // If there's an error message in URL, display it
       const urlParams = new URLSearchParams(window.location.search);
       const errorMsg = urlParams.get('error');
       if (errorMsg) {
