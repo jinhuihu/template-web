@@ -146,22 +146,78 @@ class DevServer {
       }
     });
 
-    // 处理SPA路由 - 所有未匹配的路由都返回index.html
-    this.app.get('*', (req, res) => {
-      const indexPath = path.resolve(config.paths.outputDir, 'index.html');
-      if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-      } else {
-        res.status(404).send(`
-          <html>
-            <head><title>页面未找到</title></head>
-            <body>
-              <h1>404 - 页面未找到</h1>
-              <p>请确保已经构建了项目，运行 <code>npm run build</code></p>
-            </body>
-          </html>
-        `);
-      }
+    // 404处理 - 对于不存在的文件返回404页面
+    this.app.use((req, res) => {
+      res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>404 - 页面未找到</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+              }
+              .container {
+                text-align: center;
+                padding: 2rem;
+              }
+              h1 {
+                font-size: 6rem;
+                margin: 0;
+                font-weight: 700;
+              }
+              h2 {
+                font-size: 2rem;
+                margin: 1rem 0;
+                font-weight: 400;
+              }
+              p {
+                font-size: 1.1rem;
+                margin: 2rem 0;
+                opacity: 0.9;
+              }
+              a {
+                color: white;
+                text-decoration: none;
+                padding: 0.8rem 2rem;
+                border: 2px solid white;
+                border-radius: 50px;
+                display: inline-block;
+                transition: all 0.3s;
+              }
+              a:hover {
+                background: white;
+                color: #667eea;
+              }
+              .path {
+                background: rgba(255,255,255,0.2);
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                margin: 1rem 0;
+                font-family: 'Courier New', monospace;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>404</h1>
+              <h2>页面未找到</h2>
+              <div class="path">请求路径: ${req.url}</div>
+              <p>您访问的页面不存在，请检查URL是否正确。</p>
+              <a href="/">返回首页</a>
+            </div>
+          </body>
+        </html>
+      `);
     });
   }
 
