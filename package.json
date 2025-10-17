@@ -10,11 +10,12 @@
     "dev:server": "node src/dev-server.js",
     "dev:mock": "node mock-server.js",
     "dev:watch": "node src/index.js --watch",
-    "clean": "rm -rf dist",
+    "clean": "node scripts/clean.js",
     "start": "node mock-server.js",
-    "build:full": "./build.sh",
+    "build:full": "node scripts/build.js",
     "kill-ports": "node scripts/kill-ports.js",
-    "dev:clean": "pnpm run kill-ports && pnpm run dev"
+    "dev:clean": "node scripts/kill-ports.js && node start-dev.js",
+    "verify": "node scripts/verify-platform.js"
   },
   "keywords": [
     "static-site",
